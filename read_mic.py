@@ -6,6 +6,7 @@ Code to read in audio from the microphone
 
 import pyaudio
 import numpy as np
+import matplotlib.pyplot as plt
 
 CHUNK = 1024 # how much to read at a time
 RATE = 41400 # resolution of recording device, on mac from Audio MIDI setup (search it)
@@ -20,11 +21,18 @@ stream = p.open(format=pyaudio.paInt16,
 
 # create a numpy array holding a single read of audio data
 for i in range(10): #to it a few times just to see
-    data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
-    print(data)
+	data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
+	print(data)
+	print(data.shape)
+
+
 
 
 # close the stream gracefully
 stream.stop_stream()
 stream.close()
 p.terminate()
+
+# Plot the last bit of data
+plt.plot(range(data.shape[0]), data)
+plt.show()

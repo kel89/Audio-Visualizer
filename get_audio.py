@@ -59,3 +59,9 @@ if __name__ == "__main__":
 	y = out['data']
 	plt.plot(range(y.shape[0]), y)
 	plt.show()
+
+"""
+Your next steps are to:
+	FFT the wave form in small chuncks and plot it
+	Figure out how to do both with live data and show it
+"""

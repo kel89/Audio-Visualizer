@@ -6,6 +6,7 @@ Alpha version, MVP
 
 import pyaudio
 import numpy as np
+import scipy.fftpack as sc_fft
 import matplotlib.pyplot as plt
 import matplotlib.animation as animate
 
@@ -24,8 +25,10 @@ s = p.open(	format=FORMAT,
 
 # Setup Plot -------------------------------------------------------------------
 fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(7, 8))
-ax_top = axs[0]
-ax_bot = axs[1]
+ax_top = axs[0] # fft
+ax_bot = axs[1] # wave
+
+ax_top.set_xlim([0, RATE/2])
 
 REFRESH = 100 # miliseconds
 num_loops = int((REFRESH/1000) * (RATE / CHUNK))
@@ -45,8 +48,16 @@ def get_fft(data):
 	Takes in some wave data and returns
 	fft frequencies, and amplitudes (double return)
 	"""
-	# TODO 
-	return
+	# Run the FFT
+	N = data.shape[0]
+	fft = sc_fft.fft(data)
+	freq = sc_fft.fftfreq(N) * RATE
+
+	# Truncate it
+	fft = np.abs(fft[0:int(N//2)])
+	freq = freq[0:int(N//2)]
+
+	return fft, freq
 
 def animate_plot(i):
 	"""
@@ -56,11 +67,14 @@ def animate_plot(i):
 	wave_data = get_data()
 
 	# Get FFT data
+	fft, freq = get_fft(wave_data)
 
-	ax_top.clear()
-	ax_top.plot(range(wave_data.shape[0]), wave_data)
+	ax_bot.clear()
+	ax_bot.plot(range(wave_data.shape[0]), wave_data)
 
 	# Plot FFT data
+	ax_top.clear()
+	ax_top.stem(freq, fft)
 
 try:
 	# Animate the plot

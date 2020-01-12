@@ -24,7 +24,7 @@ s = p.open(	format=FORMAT,
 			frames_per_buffer=CHUNK)
 
 # Setup Plot -------------------------------------------------------------------
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(7, 8))
+fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(3, 5))
 ax_top = axs[0] # fft
 ax_bot = axs[1] # wave
 
@@ -74,7 +74,7 @@ def animate_plot(i):
 
 	# Plot FFT data
 	ax_top.clear()
-	ax_top.stem(freq, fft)
+	ax_top.plot(freq, fft)
 
 try:
 	# Animate the plot

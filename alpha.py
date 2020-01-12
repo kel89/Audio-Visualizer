@@ -24,11 +24,14 @@ s = p.open(	format=FORMAT,
 			frames_per_buffer=CHUNK)
 
 # Setup Plot -------------------------------------------------------------------
-fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(3, 5))
+fig, axs = plt.subplots(nrows=2, ncols=1, figsize=(6, 5))
 ax_top = axs[0] # fft
 ax_bot = axs[1] # wave
 
 ax_top.set_xlim([0, RATE/2])
+
+ax_top.set_yticks([])
+ax_bot.set_yticks([])
 
 REFRESH = 100 # miliseconds
 num_loops = int((REFRESH/1000) * (RATE / CHUNK))
@@ -54,8 +57,8 @@ def get_fft(data):
 	freq = sc_fft.fftfreq(N) * RATE
 
 	# Truncate it
-	fft = np.abs(fft[0:int(N//2)])
-	freq = freq[0:int(N//2)]
+	fft = np.abs(fft[100:int(N//2)])
+	freq = freq[100:int(N//2)]
 
 	return fft, freq
 
@@ -75,6 +78,9 @@ def animate_plot(i):
 	# Plot FFT data
 	ax_top.clear()
 	ax_top.plot(freq, fft)
+
+	ax_top.set_yticks([])
+	ax_bot.set_yticks([])
 
 try:
 	# Animate the plot
